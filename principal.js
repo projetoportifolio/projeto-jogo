@@ -8,16 +8,17 @@ const telaInicial = document.querySelector(".tela-inicial");
 const caixaPerguntas = document.querySelector(".caixa-perguntas");
 const caixaAlternativas = document.querySelector(".caixa-alternativas");
 const caixaResultado = document.querySelector(".caixa-resultado");
+const caixaPausa = document.querySelector(".caixa-pausa");
 
 const textoResultado = document.querySelector(".texto-resultado");
 const tituloResultado = document.querySelector(".titulo-resultado");
 
+const tituloPausa = document.querySelector(".titulo-pausa");
+const textoPausa = document.querySelector(".texto-pausa");
+
 const botaoIniciar = document.querySelector(".iniciar-btn");
 const botaoJogarNovamente = document.querySelector(".novamente-btn");
-
-const botaoCreditos = document.querySelector(".creditos-btn");
-const telaCreditos = document.querySelector(".tela-creditos");
-const botaoVoltarInicio = document.querySelector(".voltar-inicio-btn");
+const botaoContinuar = document.querySelector(".continuar-btn");
 
 // VERIFICAÇÃO DOS ELEMENTOS
 
@@ -26,19 +27,18 @@ const elementos = [
     caixaPerguntas,
     caixaAlternativas,
     caixaResultado,
+    caixaPausa,
     textoResultado,
     tituloResultado,
+    tituloPausa,
+    textoPausa,
     botaoIniciar,
     botaoJogarNovamente,
-    botaoCreditos,
-    telaCreditos,
-    botaoVoltarInicio
+    botaoContinuar
 ];
 
 if (elementos.some(elemento => elemento === null)) {
-    throw new Error(
-        "Erro: algum elemento do HTML não foi encontrado."
-    );
+    throw new Error("Erro: algum elemento do HTML não foi encontrado.");
 }
 
 // ESTADO DA PARTIDA
@@ -51,17 +51,13 @@ let faseDaPartida = "inicio";
 
 botaoIniciar.addEventListener("click", iniciaJogo);
 botaoJogarNovamente.addEventListener("click", reiniciaJogo);
-botaoCreditos.addEventListener("click", mostraCreditos);
-botaoVoltarInicio.addEventListener("click", reiniciaJogo);
+botaoContinuar.addEventListener("click", continuarPausa);
 
 // INICIAR JOGO
 
 function iniciaJogo() {
 
-    if (faseDaPartida !== "inicio") return;
-
-    atual = 0;
-    historiaFinal = "";
+    reiniciaJogo();
 
     faseDaPartida = "jogando";
 
@@ -69,9 +65,6 @@ function iniciaJogo() {
 
     caixaPerguntas.style.display = "block";
     caixaAlternativas.style.display = "flex";
-
-    caixaResultado.style.display = "none";
-    telaCreditos.style.display = "none";
 
     mostraPergunta();
 }
@@ -82,7 +75,6 @@ function reiniciaJogo() {
 
     atual = 0;
     historiaFinal = "";
-
     faseDaPartida = "inicio";
 
     caixaPerguntas.textContent = "";
@@ -91,17 +83,18 @@ function reiniciaJogo() {
     tituloResultado.textContent = "";
     textoResultado.textContent = "";
 
+    tituloPausa.textContent = "PAUSA DE ESTUDO";
+    textoPausa.textContent = "";
+
+    botaoContinuar.textContent = "Continuar";
+    botaoContinuar.style.display = "inline-block";
+
     telaInicial.style.display = "block";
 
     caixaPerguntas.style.display = "none";
     caixaAlternativas.style.display = "none";
-
     caixaResultado.style.display = "none";
-    telaCreditos.style.display = "none";
-
-    botaoJogarNovamente.textContent = "Recomeçar do início";
-    botaoJogarNovamente.style.display = "inline-block";
-    botaoCreditos.style.display = "none";
+    caixaPausa.style.display = "none";
 }
 
 // MOSTRAR PERGUNTA
@@ -115,15 +108,33 @@ function mostraPergunta() {
         return;
     }
 
-    if (perguntaAtual.final === "vitoria") {
-        mostraVitoria(perguntaAtual.enunciado);
-        return;
-    }
-
     caixaPerguntas.textContent =
         perguntaAtual.enunciado.replace(/você/gi, nome);
 
     caixaAlternativas.replaceChildren();
+
+    // POSIÇÕES 11 E 12 — PAUSA DE ESTUDO
+
+    if (perguntaAtual.pausa === true) {
+
+        caixaPerguntas.style.display = "none";
+        caixaAlternativas.style.display = "none";
+
+        caixaPausa.style.display = "block";
+
+        tituloPausa.textContent = "PAUSA DE ESTUDO";
+        textoPausa.textContent = perguntaAtual.enunciado;
+
+        botaoContinuar.textContent = "Continuar";
+        botaoContinuar.style.display = "inline-block";
+
+        return;
+    }
+
+    caixaPausa.style.display = "none";
+
+    caixaPerguntas.style.display = "block";
+    caixaAlternativas.style.display = "flex";
 
     for (const alternativa of perguntaAtual.alternativas) {
 
@@ -146,9 +157,15 @@ function mostraPergunta() {
 
 function respostaSelecionada(opcaoSelecionada) {
 
-    if (faseDaPartida !== "jogando") return;
+    if (faseDaPartida !== "jogando") {
+        return;
+    }
 
-    if (opcaoSelecionada.disponivel === false) return;
+    if (opcaoSelecionada.disponivel === false) {
+        return;
+    }
+
+    // GAME OVER
 
     if (opcaoSelecionada.tipo === "gameover") {
 
@@ -160,6 +177,8 @@ function respostaSelecionada(opcaoSelecionada) {
 
         return;
     }
+
+    // CONFERIR DESTINO
 
     const destino = opcaoSelecionada.proxima;
 
@@ -174,8 +193,9 @@ function respostaSelecionada(opcaoSelecionada) {
     const origem = perguntas[atual];
     const chegada = perguntas[destino];
 
-    const mudouDeCaminho =
-        origem.caminho !== chegada.caminho;
+    const mudouDeCaminho = origem.caminho !== chegada.caminho;
+
+    // CONFERIR TROCAS DE NARRATIVA
 
     if (
         atual !== 0 &&
@@ -194,6 +214,8 @@ function respostaSelecionada(opcaoSelecionada) {
         return;
     }
 
+    // REGISTRAR ESCOLHA
+
     const afirmacao = aleatorio(opcaoSelecionada.afirmacao);
 
     historiaFinal += afirmacao + " ";
@@ -203,15 +225,18 @@ function respostaSelecionada(opcaoSelecionada) {
     mostraPergunta();
 }
 
-// GAME OVER
+// MOSTRAR GAME OVER
 
 function mostraGameOver(mensagem) {
 
     faseDaPartida = "gameover";
 
     caixaPerguntas.style.display = "none";
+
     caixaAlternativas.replaceChildren();
     caixaAlternativas.style.display = "none";
+
+    caixaPausa.style.display = "none";
 
     caixaResultado.style.display = "block";
 
@@ -223,56 +248,28 @@ function mostraGameOver(mensagem) {
         historiaFinal;
 
     botaoJogarNovamente.textContent = "Recomeçar do início";
-    botaoJogarNovamente.style.display = "inline-block";
-
-    botaoCreditos.style.display = "none";
-    telaCreditos.style.display = "none";
 }
 
-// VITÓRIA
+// CONTINUAR PAUSA
 
-function mostraVitoria(mensagem) {
+function continuarPausa() {
 
-    if (
-        faseDaPartida !== "jogando" ||
-        perguntas[atual].final !== "vitoria"
-    ) return;
+    if (faseDaPartida !== "jogando") {
+        return;
+    }
 
-    faseDaPartida = "vitoria";
+    if (!perguntas[atual] || perguntas[atual].pausa !== true) {
+        return;
+    }
 
-    caixaPerguntas.style.display = "none";
-    caixaAlternativas.replaceChildren();
-    caixaAlternativas.style.display = "none";
+    tituloPausa.textContent = "ETAPA CONCLUÍDA";
 
-    caixaResultado.style.display = "block";
+    textoPausa.textContent =
+        "Você concluiu esta etapa da narrativa!\n\n" +
+        "A conclusão definitiva da sua missão será " +
+        "disponibilizada na Parte 6 do projeto.";
 
-    tituloResultado.textContent = "THE END";
-
-    textoResultado.textContent =
-        mensagem +
-        "\n\nSeu percurso nesta partida:\n" +
-        historiaFinal;
-
-    botaoJogarNovamente.style.display = "none";
-    botaoCreditos.style.display = "inline-block";
-
-    telaCreditos.style.display = "none";
-}
-
-// CRÉDITOS
-
-function mostraCreditos() {
-
-    if (faseDaPartida !== "vitoria") return;
-
-    faseDaPartida = "creditos";
-
-    telaInicial.style.display = "none";
-    caixaPerguntas.style.display = "none";
-    caixaAlternativas.style.display = "none";
-    caixaResultado.style.display = "none";
-
-    telaCreditos.style.display = "block";
+    botaoContinuar.style.display = "none";
 }
 
 // ESTADO INICIAL
