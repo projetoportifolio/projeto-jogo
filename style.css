@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -77,7 +78,8 @@ body {
 
 h1,
 .caixa-perguntas,
-.caixa-resultado {
+.caixa-resultado,
+.caixa-pausa {
     font-family: 'Chakra Petch', sans-serif;
 }
 
@@ -167,7 +169,7 @@ button:disabled {
 .caixa-perguntas,
 .caixa-alternativas,
 .caixa-resultado,
-.tela-creditos {
+.caixa-pausa {
     display: none;
 }
 
@@ -206,29 +208,29 @@ button:disabled {
     white-space: pre-line;
 }
 
-.novamente-btn,
-.creditos-btn {
+.novamente-btn {
     margin-top: 10px;
 }
 
-/* CRÉDITOS */
+/* PAUSA DE ESTUDO */
 
-.tela-creditos {
+.caixa-pausa {
     text-align: center;
-    line-height: 1.6;
+    margin-top: 20px;
 }
 
-.tela-creditos h2 {
+.titulo-pausa {
     color: var(--cor4);
     font-size: 28px;
 }
 
-.tela-creditos p {
-    margin: 12px 0;
+.texto-pausa {
+    line-height: 1.8;
     font-size: 17px;
+    white-space: pre-line;
 }
 
-.voltar-inicio-btn {
+.continuar-btn {
     margin-top: 15px;
 }
 
