@@ -42,7 +42,7 @@ export const perguntas = [
             },
             {
                 texto: "Escreve o trabalho com pesquisas tradicionais e conhecimentos próprios.",
-                tipo: "avancar",
+                tipo: "saltar",
                 afirmacao: [
                     "Sentiu mais facilidade em utilizar seus próprios recursos.",
                     "Preferiu procurar respostas utilizando meios tradicionais."
@@ -50,10 +50,12 @@ export const perguntas = [
                 proxima: 4
             },
             {
-                texto: "Ignora a atividade e não entrega o trabalho.",
-                tipo: "gameover",
-                afirmacao: ["Deixou de cumprir sua responsabilidade escolar."],
-                mensagem: "Você não realizou o trabalho solicitado. A missão foi encerrada."
+                texto: "Decide explorar a narrativa da comunidade e pesquisar os impactos da IA.",
+                tipo: "trocar",
+                afirmacao: [
+                    "Decidiu conhecer os impactos da IA na comunidade."
+                ],
+                proxima: 7
             }
         ]
     },
@@ -73,17 +75,19 @@ export const perguntas = [
             },
             {
                 texto: "Utiliza ferramentas de IA para organizar suas ideias.",
-                tipo: "avancar",
+                tipo: "saltar",
                 afirmacao: [
                     "Percebeu que a IA pode ajudar na organização de informações."
                 ],
                 proxima: 8
             },
             {
-                texto: "Copia informações sem verificar se são verdadeiras.",
-                tipo: "gameover",
-                afirmacao: ["Utilizou informações sem verificar sua confiabilidade."],
-                mensagem: "Você entregou informações sem verificar sua veracidade. A missão foi comprometida."
+                texto: "Troca para a narrativa escolar e participa do debate sobre o futuro do trabalho.",
+                tipo: "trocar",
+                afirmacao: [
+                    "Decidiu levar suas descobertas para o debate escolar."
+                ],
+                proxima: 3
             }
         ]
     },
@@ -103,17 +107,20 @@ export const perguntas = [
             },
             {
                 texto: "Defende a proteção dos trabalhadores diante da automação.",
-                tipo: "avancar",
+                tipo: "saltar",
                 afirmacao: [
                     "Passou a discutir formas de reduzir as desigualdades geradas pela automação."
                 ],
-                proxima: 6
+                proxima: 4
             },
             {
-                texto: "Espalha informações falsas durante o debate.",
+                texto: "Inventar uma fonte e apresentá-la como verdadeira.",
+                afirmacao: [
+                    "Inventou uma fonte para sustentar a resposta."
+                ],
                 tipo: "gameover",
-                afirmacao: ["Compartilhou informações falsas e prejudicou o debate."],
-                mensagem: "Você espalhou informações falsas e comprometeu a missão."
+                disponivel: true,
+                mensagem: "A fonte inventada foi identificada e o trabalho foi invalidado. Você falhou na missão e precisa recomeçar."
             }
         ]
     },
@@ -133,17 +140,19 @@ export const perguntas = [
             },
             {
                 texto: "Defende que os trabalhadores precisam de proteção diante da automação.",
-                tipo: "avancar",
+                tipo: "saltar",
                 afirmacao: [
                     "Sua preocupação motivou a criação de um grupo de estudos sobre ética na IA."
                 ],
                 proxima: 6
             },
             {
-                texto: "Decide abandonar o trabalho e não participar das atividades.",
-                tipo: "gameover",
-                afirmacao: ["Abandonou a atividade antes de concluir sua participação."],
-                mensagem: "Você abandonou as atividades e não conseguiu concluir a missão."
+                texto: "Retorna à pergunta anterior para revisar suas ideias.",
+                tipo: "retornar",
+                afirmacao: [
+                    "Decidiu revisar suas ideias antes de continuar o trabalho."
+                ],
+                proxima: 3
             }
         ]
     },
@@ -170,10 +179,13 @@ export const perguntas = [
                 proxima: 11
             },
             {
-                texto: "Decide espalhar informações falsas sobre a IA.",
+                texto: "Publicar dados pessoais dos colegas sem autorização.",
+                afirmacao: [
+                    "Expôs dados pessoais dos colegas sem autorização."
+                ],
                 tipo: "gameover",
-                afirmacao: ["Compartilhou informações falsas."],
-                mensagem: "Você espalhou informações falsas e comprometeu a missão."
+                disponivel: true,
+                mensagem: "A divulgação expôs os colegas e seu projeto foi suspenso. Você falhou na missão e precisa recomeçar."
             }
         ]
     },
@@ -225,17 +237,20 @@ export const perguntas = [
             },
             {
                 texto: "Cria uma imagem utilizando um gerador de imagens com IA.",
-                tipo: "avancar",
+                tipo: "saltar",
                 afirmacao: [
                     "Percebeu que a IA pode ajudar a transformar ideias em imagens."
                 ],
                 proxima: 8
             },
             {
-                texto: "Utiliza uma imagem da internet sem verificar sua autoria.",
+                texto: "Acusar publicamente um colega sem qualquer prova.",
+                afirmacao: [
+                    "Acusou um colega publicamente sem provas."
+                ],
                 tipo: "gameover",
-                afirmacao: ["Utilizou uma imagem sem verificar sua origem."],
-                mensagem: "Você utilizou uma imagem sem verificar sua autoria e comprometeu a atividade."
+                disponivel: true,
+                mensagem: "A acusação sem provas prejudicou um colega e interrompeu a investigação. Você falhou na missão e precisa recomeçar."
             }
         ]
     },
@@ -255,17 +270,19 @@ export const perguntas = [
             },
             {
                 texto: "Compartilha sua imagem e explica como ela foi produzida.",
-                tipo: "avancar",
+                tipo: "saltar",
                 afirmacao: [
                     "Compartilhou seu processo criativo com os colegas."
                 ],
                 proxima: 10
             },
             {
-                texto: "Afirma que todas as imagens geradas por IA são verdadeiras.",
-                tipo: "gameover",
-                afirmacao: ["Desconsiderou a necessidade de avaliar criticamente os resultados da IA."],
-                mensagem: "Você não avaliou corretamente as informações e comprometeu a atividade."
+                texto: "Retorna à etapa anterior para revisar sua criação.",
+                tipo: "retornar",
+                afirmacao: [
+                    "Decidiu revisar sua criação antes de continuar."
+                ],
+                proxima: 7
             }
         ]
     },
@@ -292,10 +309,13 @@ export const perguntas = [
                 proxima: 6
             },
             {
-                texto: "Compartilha conteúdos suspeitos sem verificar sua autenticidade.",
+                texto: "Criar outro áudio falso e divulgá-lo como verdadeiro.",
+                afirmacao: [
+                    "Criou e divulgou outro áudio falso como verdadeiro."
+                ],
                 tipo: "gameover",
-                afirmacao: ["Compartilhou conteúdos suspeitos sem verificar sua autenticidade."],
-                mensagem: "Você compartilhou informações suspeitas e comprometeu a missão."
+                disponivel: true,
+                mensagem: "O novo áudio falso causou mais desinformação e a campanha foi interrompida. Você falhou na missão e precisa recomeçar."
             }
         ]
     },
@@ -322,35 +342,36 @@ export const perguntas = [
                 proxima: 9
             },
             {
-                texto: "Trocar para a narrativa escolar e preparar a apresentação do trabalho.",
-                tipo: "trocar",
+                texto: "Expor conversas privadas de moradores sem autorização.",
                 afirmacao: [
-                    "Decidiu compartilhar seus conhecimentos com a escola."
+                    "Expôs conversas privadas de moradores sem autorização."
                 ],
-                proxima: 6
+                tipo: "gameover",
+                disponivel: true,
+                mensagem: "A exposição das conversas privadas encerrou sua participação na campanha. Você falhou na missão e precisa recomeçar."
             }
         ]
     },
 
-    // POSIÇÃO 11 — VITÓRIA DA ESCOLA
+    // POSIÇÃO 11 — PAUSA DA NARRATIVA A
     {
         caminho: "A",
-        final: "vitoria",
+        pausa: true,
         enunciado:
-            "Você apresentou seu trabalho à escola, explicou os benefícios " +
-            "e os limites da IA e demonstrou os cuidados necessários. " +
-            "A missão foi concluída com sucesso. Você venceu!",
+            "Você chegou à etapa de apresentação do trabalho escolar.\n\n" +
+            "Reflita sobre os benefícios e os limites da inteligência artificial.\n\n" +
+            "A conclusão da missão será apresentada na próxima etapa.",
         alternativas: []
     },
 
-    // POSIÇÃO 12 — VITÓRIA DA COMUNIDADE
+    // POSIÇÃO 12 — PAUSA DA NARRATIVA B
     {
         caminho: "B",
-        final: "vitoria",
+        pausa: true,
         enunciado:
-            "Você apresentou o esclarecimento da escola aos moradores " +
-            "e ensinou como verificar conteúdos suspeitos. " +
-            "A missão foi concluída com sucesso. Você venceu!",
+            "Você chegou à etapa de orientação da comunidade.\n\n" +
+            "Reflita sobre a importância de verificar informações e combater a desinformação.\n\n" +
+            "A conclusão da missão será apresentada na próxima etapa.",
         alternativas: []
     }
 
