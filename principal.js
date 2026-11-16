@@ -37,7 +37,7 @@ const elementos = [
 
 if (elementos.some(elemento => elemento === null)) {
     throw new Error(
-        "Erro: algum elemento do HTML não foi encontrado. Confira as classes."
+        "Erro: algum elemento do HTML não foi encontrado."
     );
 }
 
@@ -47,32 +47,18 @@ let atual = 0;
 let historiaFinal = "";
 let faseDaPartida = "inicio";
 
-// EVENTOS REGISTRADOS UMA ÚNICA VEZ
+// EVENTOS
 
 botaoIniciar.addEventListener("click", iniciaJogo);
-
-botaoJogarNovamente.addEventListener(
-    "click",
-    reiniciaJogo
-);
-
-botaoCreditos.addEventListener(
-    "click",
-    mostraCreditos
-);
-
-botaoVoltarInicio.addEventListener(
-    "click",
-    reiniciaJogo
-);
+botaoJogarNovamente.addEventListener("click", reiniciaJogo);
+botaoCreditos.addEventListener("click", mostraCreditos);
+botaoVoltarInicio.addEventListener("click", reiniciaJogo);
 
 // INICIAR JOGO
 
 function iniciaJogo() {
 
-    if (faseDaPartida !== "inicio") {
-        return;
-    }
+    if (faseDaPartida !== "inicio") return;
 
     atual = 0;
     historiaFinal = "";
@@ -100,7 +86,6 @@ function reiniciaJogo() {
     faseDaPartida = "inicio";
 
     caixaPerguntas.textContent = "";
-
     caixaAlternativas.replaceChildren();
 
     tituloResultado.textContent = "";
@@ -115,7 +100,6 @@ function reiniciaJogo() {
     telaCreditos.style.display = "none";
 
     botaoJogarNovamente.textContent = "Recomeçar do início";
-
     botaoJogarNovamente.style.display = "inline-block";
     botaoCreditos.style.display = "none";
 }
@@ -131,12 +115,8 @@ function mostraPergunta() {
         return;
     }
 
-    // VERIFICAR VITÓRIA
-
     if (perguntaAtual.final === "vitoria") {
-
         mostraVitoria(perguntaAtual.enunciado);
-
         return;
     }
 
@@ -150,15 +130,12 @@ function mostraPergunta() {
         const botao = document.createElement("button");
 
         botao.type = "button";
-
         botao.textContent = alternativa.texto;
 
         botao.disabled = alternativa.disponivel === false;
 
         botao.addEventListener("click", function () {
-
             respostaSelecionada(alternativa);
-
         });
 
         caixaAlternativas.appendChild(botao);
@@ -169,15 +146,9 @@ function mostraPergunta() {
 
 function respostaSelecionada(opcaoSelecionada) {
 
-    if (faseDaPartida !== "jogando") {
-        return;
-    }
+    if (faseDaPartida !== "jogando") return;
 
-    if (opcaoSelecionada.disponivel === false) {
-        return;
-    }
-
-    // GAME OVER
+    if (opcaoSelecionada.disponivel === false) return;
 
     if (opcaoSelecionada.tipo === "gameover") {
 
@@ -190,37 +161,28 @@ function respostaSelecionada(opcaoSelecionada) {
         return;
     }
 
-    // VERIFICAR DESTINO
-
     const destino = opcaoSelecionada.proxima;
 
     if (
         !Number.isInteger(destino) ||
         perguntas[destino] === undefined
     ) {
-
         console.error("Destino inválido:", destino);
-
         return;
     }
 
     const origem = perguntas[atual];
-
     const chegada = perguntas[destino];
 
     const mudouDeCaminho =
         origem.caminho !== chegada.caminho;
-
-    // VERIFICAR TROCA DE NARRATIVA
 
     if (
         atual !== 0 &&
         mudouDeCaminho &&
         opcaoSelecionada.tipo !== "trocar"
     ) {
-
         console.error("Mudança de caminho sem o tipo trocar.");
-
         return;
     }
 
@@ -228,35 +190,27 @@ function respostaSelecionada(opcaoSelecionada) {
         opcaoSelecionada.tipo === "trocar" &&
         !mudouDeCaminho
     ) {
-
         console.error("A troca deve levar a outro caminho.");
-
         return;
     }
-
-    // REGISTRAR ESCOLHA
 
     const afirmacao = aleatorio(opcaoSelecionada.afirmacao);
 
     historiaFinal += afirmacao + " ";
-
-    // ATUALIZAR POSIÇÃO
 
     atual = destino;
 
     mostraPergunta();
 }
 
-// TELA GAME OVER
+// GAME OVER
 
 function mostraGameOver(mensagem) {
 
     faseDaPartida = "gameover";
 
     caixaPerguntas.style.display = "none";
-
     caixaAlternativas.replaceChildren();
-
     caixaAlternativas.style.display = "none";
 
     caixaResultado.style.display = "block";
@@ -269,32 +223,25 @@ function mostraGameOver(mensagem) {
         historiaFinal;
 
     botaoJogarNovamente.textContent = "Recomeçar do início";
-
     botaoJogarNovamente.style.display = "inline-block";
 
     botaoCreditos.style.display = "none";
-
     telaCreditos.style.display = "none";
 }
 
-// TELA DE VITÓRIA
+// VITÓRIA
 
 function mostraVitoria(mensagem) {
 
     if (
         faseDaPartida !== "jogando" ||
         perguntas[atual].final !== "vitoria"
-    ) {
-
-        return;
-    }
+    ) return;
 
     faseDaPartida = "vitoria";
 
     caixaPerguntas.style.display = "none";
-
     caixaAlternativas.replaceChildren();
-
     caixaAlternativas.style.display = "none";
 
     caixaResultado.style.display = "block";
@@ -307,28 +254,22 @@ function mostraVitoria(mensagem) {
         historiaFinal;
 
     botaoJogarNovamente.style.display = "none";
-
     botaoCreditos.style.display = "inline-block";
 
     telaCreditos.style.display = "none";
 }
 
-// MOSTRAR CRÉDITOS
+// CRÉDITOS
 
 function mostraCreditos() {
 
-    if (faseDaPartida !== "vitoria") {
-        return;
-    }
+    if (faseDaPartida !== "vitoria") return;
 
     faseDaPartida = "creditos";
 
     telaInicial.style.display = "none";
-
     caixaPerguntas.style.display = "none";
-
     caixaAlternativas.style.display = "none";
-
     caixaResultado.style.display = "none";
 
     telaCreditos.style.display = "block";
